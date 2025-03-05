@@ -16,14 +16,6 @@ struct Args {
     #[arg(short, long, default_value = ":memory:")]
     db: String,
 
-    /// 服务器绑定地址
-    #[arg(short = 'H', long, default_value = "127.0.0.1")]
-    host: String,
-
-    /// 服务器绑定端口
-    #[arg(short, long, default_value_t = 8080)]
-    port: u16,
-
     /// 日志级别
     #[arg(long, default_value = "info")]
     log_level: String,
@@ -36,24 +28,24 @@ async fn main() -> anyhow::Result<()> {
 
     // 设置日志
     let file_appender = RollingFileAppender::new(Rotation::DAILY, "logs", "mcp-sqlite.log");
+    let (non_blocking, _guard) = tracing_appender::non_blocking(file_appender);
 
     tracing_subscriber::registry()
-        .with(
-            EnvFilter::try_from_default_env()
-                .unwrap_or_else(|_| EnvFilter::new(format!("mcp_sqlite={}", args.log_level))),
-        )
-        .with(tracing_subscriber::fmt::layer().with_writer(file_appender))
+        .with(EnvFilter::try_from_default_env().unwrap_or_else(|_| {
+            EnvFilter::try_new(&args.log_level).unwrap_or_else(|_| EnvFilter::new("info"))
+        }))
+        .with(tracing_subscriber::fmt::layer().with_writer(non_blocking))
         .init();
 
-    info!("Starting SQLite MCP Server");
-    info!("Database: {}", args.db);
+    info!("启动SQLite MCP服务器");
+    info!("数据库路径: {}", args.db);
 
-    // 创建服务器
+    // 创建SQLite路由器
     let router = match SQLiteRouter::new(&args.db) {
         Ok(router) => router,
         Err(e) => {
-            error!("Failed to create SQLite router: {}", e);
-            return Err(anyhow::anyhow!("Failed to create SQLite router: {}", e));
+            error!("创建SQLite路由器失败: {}", e);
+            return Err(anyhow::anyhow!("创建SQLite路由器失败: {}", e));
         }
     };
 
@@ -63,11 +55,10 @@ async fn main() -> anyhow::Result<()> {
     // 创建服务器
     let server = Server::new(router_service);
 
-    // 创建传输层
+    // 使用标准输入输出作为传输层
     let transport = ByteTransport::new(stdin(), stdout());
 
-    info!("Server started successfully");
-
     // 运行服务器
+    info!("服务器已启动，使用stdio传输");
     Ok(server.run(transport).await?)
 }
