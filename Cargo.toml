@@ -1,9 +1,9 @@
 [package]
 name = "mcp-sqlite"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 description = "SQLite MCP Server - Rust implementation"
-authors = ["Your Name <your.email@example.com>"]
+authors = ["waitfish <daiwj2024@outlook.com>"]
 license = "MIT"
 repository = "https://github.com/fishcode2025/mcp-sqlite"
 documentation = "https://docs.rs/mcp-sqlite"

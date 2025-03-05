@@ -21,7 +21,7 @@ fishcode2025是一个致力于开发高质量、开源软件的组织，专注�
 ### 从Crates.io安装
 
 ```bash
-cargo install mcp-sqlite
+cargo install fishcode2025-mcp-sqlite
 ```
 
 ### 从源代码构建
