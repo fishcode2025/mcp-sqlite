@@ -1,7 +1,7 @@
 [build]
-# 启用文档测试
-rustdocflags = ["--cfg", "docsrs"]
+# 启用文档测试，但不使用docsrs特性
+rustdocflags = []
 
 [doc]
-# 为文档生成添加额外的rustdoc标志
-rustdoc-args = ["--cfg", "docsrs"]
+# 为文档生成添加额外的rustdoc标志，但不使用docsrs特性
+rustdoc-args = []

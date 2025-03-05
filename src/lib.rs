@@ -57,7 +57,8 @@
  * - `--log-level`: 日志级别（默认为`info`）
  */
 
-#![cfg_attr(docsrs, feature(doc_cfg))]
+// 注释掉这一行，因为它需要nightly版本的Rust
+// #![cfg_attr(docsrs, feature(doc_cfg))]
 
 /// SQLite MCP服务器实现
 pub mod server;
