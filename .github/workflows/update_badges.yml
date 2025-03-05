@@ -10,10 +10,13 @@ on:
 jobs:
   update-badges:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
+          token: ${{ secrets.PAT }}
 
       - name: 设置Git用户
         run: |

@@ -43,7 +43,16 @@ jobs:
           LICENSE_BADGE="[![许可证](https://img.shields.io/badge/许可证-MIT-green)](https://github.com/${REPO}/blob/main/LICENSE)"
 
           # 更新README.md
-          sed -i "1s/^# SQLite MCP服务器/# SQLite MCP服务器\n\n${BUILD_BADGE} ${VERSION_BADGE} ${CRATES_BADGE} ${DOCS_BADGE} ${LICENSE_BADGE}/" README.md
+          awk -v build="$BUILD_BADGE" -v version="$VERSION_BADGE" -v crates="$CRATES_BADGE" -v docs="$DOCS_BADGE" -v license="$LICENSE_BADGE" '
+          {
+            if (NR == 1 && $0 ~ /^# SQLite MCP服务器/) {
+              print $0;
+              print "";
+              print build, version, crates, docs, license;
+            } else if (!(NR <= 3 && $0 ~ /^\[!\[/)) {
+              print $0;
+            }
+          }' README.md > README.md.new && mv README.md.new README.md
 
           # 检查是否有更改
           if git diff --quiet README.md; then
