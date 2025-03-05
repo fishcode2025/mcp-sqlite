@@ -1,9 +1,8 @@
-use mcp_client::{
+use mcp_client_fishcode2025::{
     client::{ClientCapabilities, ClientInfo, McpClient, McpClientTrait},
     transport::{StdioTransport, Transport},
     McpService,
 };
-use mcp_core;
 use serde_json::json;
 use std::{collections::HashMap, env, time::Duration};
 
@@ -147,7 +146,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // 解析并打印结果
     if let Some(content) = result.content.first() {
         match content {
-            mcp_core::content::Content::Text(text_content) => {
+            mcp_core_fishcode2025::content::Content::Text(text_content) => {
                 if let Ok(json_value) =
                     serde_json::from_str::<serde_json::Value>(&text_content.text)
                 {

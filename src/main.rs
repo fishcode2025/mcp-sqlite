@@ -1,7 +1,7 @@
 mod server;
 
 use clap::Parser;
-use mcp_server::{router::RouterService, ByteTransport, Server};
+use mcp_server_fishcode2025::{router::RouterService, ByteTransport, Server};
 use server::SQLiteRouter;
 use tokio::io::{stdin, stdout};
 use tracing::{error, info};

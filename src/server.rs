@@ -1,13 +1,13 @@
 use std::{future::Future, pin::Pin, sync::Arc};
 
 use base64::{engine::general_purpose::STANDARD, Engine};
-use mcp_core::{
+use mcp_core_fishcode2025::{
     handler::{PromptError, ResourceError, ToolError},
     prompt::Prompt,
     protocol::ServerCapabilities,
     Content, Resource, Tool,
 };
-use mcp_server::router::CapabilitiesBuilder;
+use mcp_server_fishcode2025::router::CapabilitiesBuilder;
 use rusqlite::{Connection, Row, ToSql};
 use serde_json::{json, Value};
 use tokio::sync::Mutex;
@@ -254,7 +254,7 @@ impl SQLiteRouter {
     }
 }
 
-impl mcp_server::Router for SQLiteRouter {
+impl mcp_server_fishcode2025::Router for SQLiteRouter {
     fn name(&self) -> String {
         "sqlite".to_string()
     }

@@ -880,15 +880,16 @@ dependencies = [
 ]
 
 [[package]]
-name = "mcp-client"
-version = "1.0.7"
-source = "git+https://github.com/modelcontextprotocol/rust-sdk.git#c0bd94dd85a3535cb1580424465140d51bab2a17"
+name = "mcp-client-fishcode2025"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "835d950ea1cfbd4ba070ffb7e7e7279d9b4739d8c3f37caeadae94fd9c54fa80"
 dependencies = [
  "anyhow",
  "async-trait",
  "eventsource-client",
  "futures",
- "mcp-core",
+ "mcp-core-fishcode2025",
  "rand",
  "reqwest",
  "serde",
@@ -903,9 +904,10 @@ dependencies = [
 ]
 
 [[package]]
-name = "mcp-core"
-version = "1.0.7"
-source = "git+https://github.com/modelcontextprotocol/rust-sdk.git#c0bd94dd85a3535cb1580424465140d51bab2a17"
+name = "mcp-core-fishcode2025"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d300ec323c18c3698699d26d9020fdefcf449d8210b769b0a85ee497d1f8ec5f"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -919,13 +921,14 @@ dependencies = [
 ]
 
 [[package]]
-name = "mcp-macros"
-version = "1.0.7"
-source = "git+https://github.com/modelcontextprotocol/rust-sdk.git#c0bd94dd85a3535cb1580424465140d51bab2a17"
+name = "mcp-macros-fishcode2025"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3ce412dc6b6ab5d7abce30b3af43df125997822bcf7395b14b954f149f112c48"
 dependencies = [
  "async-trait",
  "convert_case",
- "mcp-core",
+ "mcp-core-fishcode2025",
  "proc-macro2",
  "quote",
  "schemars",
@@ -935,15 +938,16 @@ dependencies = [
 ]
 
 [[package]]
-name = "mcp-server"
-version = "1.0.7"
-source = "git+https://github.com/modelcontextprotocol/rust-sdk.git#c0bd94dd85a3535cb1580424465140d51bab2a17"
+name = "mcp-server-fishcode2025"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7bafd5a2ea59159ea98708e700685e196650853d81ea56c1c90bc6418701b6bb"
 dependencies = [
  "anyhow",
  "async-trait",
  "futures",
- "mcp-core",
- "mcp-macros",
+ "mcp-core-fishcode2025",
+ "mcp-macros-fishcode2025",
  "pin-project",
  "schemars",
  "serde",
@@ -966,9 +970,9 @@ dependencies = [
  "base64",
  "clap",
  "futures",
- "mcp-client",
- "mcp-core",
- "mcp-server",
+ "mcp-client-fishcode2025",
+ "mcp-core-fishcode2025",
+ "mcp-server-fishcode2025",
  "rusqlite",
  "serde",
  "serde_json",
