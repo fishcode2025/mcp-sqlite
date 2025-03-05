@@ -1,22 +1,128 @@
-name: Rust
+name: Rust CI/CD
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
+    tags:
+      - "v*" # 当推送以v开头的标签时触发，例如v1.0.0
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 env:
   CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: 1
 
 jobs:
+  # 构建和测试任务
   build:
+    name: 构建和测试
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        rust: [stable]
 
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 安装Rust工具链
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: ${{ matrix.rust }}
+          override: true
+          components: rustfmt, clippy
+
+      - name: 缓存Rust依赖
+        uses: Swatinem/rust-cache@v2
+
+      - name: 检查代码格式
+        run: cargo fmt --all -- --check
+
+      - name: 运行Clippy
+        run: cargo clippy -- -D warnings
+
+      - name: 构建
+        run: cargo build --verbose
+
+      - name: 运行测试
+        run: cargo test --verbose
+
+      - name: 构建发布版本
+        run: cargo build --release --verbose
+
+      - name: 上传构建产物
+        uses: actions/upload-artifact@v3
+        with:
+          name: mcp-sqlite-${{ matrix.os }}
+          path: |
+            target/release/mcp-sqlite
+            target/release/mcp-sqlite.exe
+          if-no-files-found: ignore
+
+  # 发布任务，仅在标签推送时运行
+  release:
+    name: 发布到GitHub Release
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Build
-      run: cargo build --verbose
-    - name: Run tests
-      run: cargo test --verbose
+      - uses: actions/checkout@v4
+
+      - name: 下载所有构建产物
+        uses: actions/download-artifact@v3
+
+      - name: 显示下载的文件
+        run: ls -R
+
+      - name: 打包Linux版本
+        run: |
+          mkdir -p release-artifacts
+          if [ -f "mcp-sqlite-ubuntu-latest/mcp-sqlite" ]; then
+            tar -czf release-artifacts/mcp-sqlite-linux-x86_64.tar.gz -C mcp-sqlite-ubuntu-latest mcp-sqlite
+          fi
+
+      - name: 打包Windows版本
+        run: |
+          if [ -f "mcp-sqlite-windows-latest/mcp-sqlite.exe" ]; then
+            zip -j release-artifacts/mcp-sqlite-windows-x86_64.zip mcp-sqlite-windows-latest/mcp-sqlite.exe
+          fi
+
+      - name: 打包macOS版本
+        run: |
+          if [ -f "mcp-sqlite-macos-latest/mcp-sqlite" ]; then
+            tar -czf release-artifacts/mcp-sqlite-macos-x86_64.tar.gz -C mcp-sqlite-macos-latest mcp-sqlite
+          fi
+
+      - name: 创建Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: release-artifacts/*
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # 发布到crates.io
+  publish:
+    name: 发布到crates.io
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 安装Rust工具链
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+
+      - name: 发布到crates.io
+        run: cargo publish --token ${{ secrets.CRATES_IO_TOKEN }}
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CRATES_IO_TOKEN }}

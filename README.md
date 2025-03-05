@@ -1,6 +1,36 @@
 # SQLite MCP服务器
 
-这是一个使用Rust实现的SQLite MCP服务器，提供通过Model Context Protocol访问SQLite数据库的能力。
+[![构建状态](https://github.com/fishcode2025/mcp-sqlite/actions/workflows/rust.yml/badge.svg?branch=main)](https://github.com/fishcode2025/mcp-sqlite/actions/workflows/rust.yml)
+[![版本](https://img.shields.io/github/v/release/fishcode2025/mcp-sqlite?include_prereleases)](https://github.com/fishcode2025/mcp-sqlite/releases/latest)
+[![Crates.io](https://img.shields.io/crates/v/mcp-sqlite)](https://crates.io/crates/mcp-sqlite)
+[![文档](https://docs.rs/mcp-sqlite/badge.svg)](https://docs.rs/mcp-sqlite)
+[![许可证](https://img.shields.io/badge/许可证-MIT-green)](https://github.com/fishcode2025/mcp-sqlite/blob/main/LICENSE)
+
+这是一个使用Rust实现的SQLite MCP服务器，提供通过Model Context Protocol访问SQLite数据库的能力。由[fishcode2025](https://github.com/fishcode2025)组织维护。
+
+## 关于fishcode2025
+
+fishcode2025是一个致力于开发高质量、开源软件的组织，专注于数据库、API和开发工具等领域。查看[ORGANIZATION.md](ORGANIZATION.md)了解更多信息。
+
+## 安装
+
+### 预编译二进制文件
+
+您可以从[GitHub Releases](https://github.com/fishcode2025/mcp-sqlite/releases)页面下载预编译的二进制文件。
+
+### 从Crates.io安装
+
+```bash
+cargo install mcp-sqlite
+```
+
+### 从源代码构建
+
+```bash
+git clone https://github.com/fishcode2025/mcp-sqlite.git
+cd mcp-sqlite
+cargo build --release
+```
 
 ## 功能
 
@@ -128,16 +158,6 @@ id | name | email
 ```
 
 如果你看到类似上述的输出，说明服务器功能正常。
-
-## 安装
-
-### 从源代码构建
-
-```bash
-git clone https://github.com/waitfish/mcp-sqlite.git
-cd mcp-sqlite
-cargo build --release
-```
 
 ## 使用
 
