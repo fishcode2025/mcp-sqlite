@@ -1,3 +1,34 @@
+/*!
+ * # SQLite MCP服务器
+ *
+ * 这是一个使用Rust实现的SQLite MCP（Model Context Protocol）服务器，
+ * 提供通过MCP协议访问SQLite数据库的能力。
+ *
+ * ## 功能
+ *
+ * 服务器提供以下MCP方法：
+ *
+ * - `query`: 执行SQL查询并返回结果
+ * - `execute`: 执行SQL语句
+ * - `executemany`: 使用不同参数多次执行SQL语句
+ * - `executescript`: 执行SQL脚本
+ *
+ * ## 使用方法
+ *
+ * ```bash
+ * # 使用内存数据库
+ * ./mcp-sqlite
+ *
+ * # 使用指定的SQLite数据库文件
+ * ./mcp-sqlite --db path/to/database.db
+ * ```
+ *
+ * ## 命令行选项
+ *
+ * - `--db`: SQLite数据库文件路径（默认为内存数据库`:memory:`）
+ * - `--log-level`: 日志级别（默认为`info`）
+ */
+
 mod server;
 
 use clap::Parser;
@@ -8,19 +39,22 @@ use tracing::{error, info};
 use tracing_appender::rolling::{RollingFileAppender, Rotation};
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt, EnvFilter};
 
-/// SQLite MCP服务器
+/// SQLite MCP服务器命令行参数
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
 struct Args {
-    /// SQLite数据库文件路径
+    /// SQLite数据库文件路径，使用":memory:"表示内存数据库
     #[arg(short, long, default_value = ":memory:")]
     db: String,
 
-    /// 日志级别
+    /// 日志级别，可选值：trace, debug, info, warn, error
     #[arg(long, default_value = "info")]
     log_level: String,
 }
 
+/// 程序入口点
+///
+/// 解析命令行参数，设置日志，创建SQLite路由器，并启动MCP服务器
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
     // 解析命令行参数

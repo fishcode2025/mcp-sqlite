@@ -5,6 +5,17 @@ edition = "2021"
 description = "SQLite MCP Server - Rust implementation"
 authors = ["Your Name <your.email@example.com>"]
 license = "MIT"
+repository = "https://github.com/waitfish/mcp-sqlite"
+documentation = "https://docs.rs/mcp-sqlite"
+readme = "README.md"
+keywords = ["sqlite", "mcp", "database", "server"]
+categories = ["database"]
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
+default-target = "x86_64-unknown-linux-gnu"
+targets = []
 
 [dependencies]
 mcp-core_fishcode2025 = { package = "mcp-core-fishcode2025", version = "0.1.0" }
@@ -29,3 +40,17 @@ mcp-client_fishcode2025 = { package = "mcp-client-fishcode2025", version = "0.1.
 [[example]]
 name = "client"
 path = "examples/client.rs"
+
+[[example]]
+name = "doc_example"
+path = "examples/doc_example.rs"
+
+[lib]
+name = "mcp_sqlite"
+path = "src/lib.rs"
+doctest = true
+doc = true
+
+[[bin]]
+name = "mcp-sqlite"
+path = "src/main.rs"

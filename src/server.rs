@@ -1,3 +1,72 @@
+/*!
+ * # SQLite MCP服务器实现
+ *
+ * 本模块实现了SQLite MCP服务器的核心功能，包括：
+ *
+ * - SQLite连接管理
+ * - MCP方法实现（query, execute, executemany, executescript）
+ * - 参数处理和结果格式化
+ *
+ * ## 主要组件
+ *
+ * - [`SQLiteRouter`]: 实现MCP路由器接口，处理客户端请求
+ *
+ * ## 支持的MCP方法
+ *
+ * ### `query`
+ *
+ * 执行SQL查询并返回结果。
+ *
+ * #### 查询参数
+ *
+ * - `query`：要执行的SQL查询
+ * - `params`：（可选）绑定到查询的参数
+ *
+ * #### 查询返回值
+ *
+ * - `columns`：列名
+ * - `rows`：查询返回的行
+ *
+ * ### `execute`
+ *
+ * 执行SQL语句。
+ *
+ * #### 执行参数
+ *
+ * - `statement`：要执行的SQL语句
+ * - `params`：（可选）绑定到语句的参数
+ *
+ * #### 执行返回值
+ *
+ * - `rowcount`：受影响的行数
+ * - `lastrowid`：最后插入行的ID（如适用）
+ *
+ * ### `executemany`
+ *
+ * 使用不同参数多次执行SQL语句。
+ *
+ * #### 批量执行参数
+ *
+ * - `statement`：要执行的SQL语句
+ * - `params_list`：绑定到语句的参数列表
+ *
+ * #### 批量执行返回值
+ *
+ * - `rowcount`：受影响的行数
+ *
+ * ### `executescript`
+ *
+ * 执行SQL脚本。
+ *
+ * #### 脚本参数
+ *
+ * - `script`：要执行的SQL脚本
+ *
+ * #### 脚本返回值
+ *
+ * - `rowcount`：受影响的行数
+ */
+
 use std::{future::Future, pin::Pin, sync::Arc};
 
 use base64::{engine::general_purpose::STANDARD, Engine};
@@ -13,14 +82,32 @@ use serde_json::{json, Value};
 use tokio::sync::Mutex;
 use tracing::debug;
 
-/// SQLite MCP服务器
+/// SQLite MCP服务器路由器
+///
+/// 负责处理MCP客户端请求，执行SQL操作，并返回结果
 pub struct SQLiteRouter {
-    /// SQLite连接
+    /// SQLite数据库连接
     conn: Arc<Mutex<Connection>>,
 }
 
 impl SQLiteRouter {
-    /// 创建一个新的SQLite MCP服务器
+    /// 创建一个新的SQLite MCP服务器路由器
+    ///
+    /// # 参数
+    ///
+    /// * `db_path` - SQLite数据库文件路径，使用":memory:"表示内存数据库
+    ///
+    /// # 返回值
+    ///
+    /// 成功时返回`SQLiteRouter`实例，失败时返回SQLite错误
+    ///
+    /// # 示例
+    ///
+    /// ```
+    /// use mcp_sqlite::server::SQLiteRouter;
+    ///
+    /// let router = SQLiteRouter::new(":memory:").expect("创建路由器失败");
+    /// ```
     pub fn new(db_path: &str) -> Result<Self, rusqlite::Error> {
         let conn = Connection::open(db_path)?;
         Ok(Self {
@@ -29,6 +116,14 @@ impl SQLiteRouter {
     }
 
     /// 执行SQL查询并返回结果
+    ///
+    /// # 参数
+    ///
+    /// * `params` - 包含查询参数的JSON对象，必须包含"query"字段，可选包含"params"字段
+    ///
+    /// # 返回值
+    ///
+    /// 成功时返回包含查询结果的JSON对象，失败时返回工具错误
     async fn query(&self, params: Value) -> Result<Value, ToolError> {
         // 获取查询参数
         let query = match params.get("query") {
