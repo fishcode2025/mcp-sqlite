@@ -1,5 +1,7 @@
 # SQLite MCP服务器
 
+[![构建状态](https://github.com/fishcode2025/mcp-sqlite/actions/workflows/rust.yml/badge.svg?branch=main)](https://github.com/fishcode2025/mcp-sqlite/actions/workflows/rust.yml) [![版本](https://img.shields.io/github/v/release/fishcode2025/mcp-sqlite?include_prereleases)](https://github.com/fishcode2025/mcp-sqlite/releases/latest) [![Crates.io](https://img.shields.io/crates/v/mcp-sqlite)](https://crates.io/crates/mcp-sqlite) [![文档](https://docs.rs/mcp-sqlite/badge.svg)](https://docs.rs/mcp-sqlite) [![许可证](https://img.shields.io/badge/许可证-MIT-green)](https://github.com/fishcode2025/mcp-sqlite/blob/main/LICENSE)
+
 [![构建状态](https://github.com/fishcode2025/mcp-sqlite/actions/workflows/rust.yml/badge.svg?branch=main)](https://github.com/fishcode2025/mcp-sqlite/actions/workflows/rust.yml)
 [![版本](https://img.shields.io/github/v/release/fishcode2025/mcp-sqlite?include_prereleases)](https://github.com/fishcode2025/mcp-sqlite/releases/latest)
 [![Crates.io](https://img.shields.io/crates/v/mcp-sqlite)](https://crates.io/crates/mcp-sqlite)
