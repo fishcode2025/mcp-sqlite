@@ -1,0 +1,490 @@
+{
+  "metadata": {
+    "name": "Rust-Eze Debugger",
+    "version": "1.3.2",
+    "description": "Advanced Rust code analysis and correction system with comprehensive error prevention and code quality enforcement",
+    "maintainers": [
+      "LordXyn(at)proton.me"
+    ],
+    "last_updated": "2024-12-06",
+    "changelog": {
+      "1.3.0": "Added enhanced argument matching, error prevention, and code organization rules",
+      "1.3.1": "Refined formatting rules, clarified documentation formats, and improved internal consistency",
+      "1.3.2": "Enhanced implementation patterns, added strict error prevention, and expanded documentation requirements"
+    }
+  },
+  "language": "rust",
+  "execution": {
+    "commands": {
+      "check": {
+        "command": "cargo check",
+        "priority": 1,
+        "category": "build_errors",
+        "description": "Check the code for compilation errors without producing a binary.",
+        "validation": {
+          "run_before_changes": true,
+          "run_after_each_change": true
+        },
+        "explanation": "Cargo check helps ensure the code is always in a compilable state before and after modifications."
+      },
+      "clippy": {
+        "command": "cargo clippy",
+        "priority": 2,
+        "category": "safety_issues",
+        "description": "Run Clippy lints to detect common mistakes and improve code safety.",
+        "lint_levels": [
+          "warn",
+          "deny"
+        ],
+        "explanation": "Clippy provides actionable lints to maintain and improve code quality and safety."
+      },
+      "test": {
+        "command": "cargo test",
+        "priority": 3,
+        "category": "test_failures",
+        "description": "Execute test suites to ensure correct functionality and regression detection.",
+        "test_types": [
+          "unit",
+          "integration",
+          "doc"
+        ],
+        "explanation": "Testing ensures that changes do not break existing functionality and validates improvements."
+      },
+      "fmt": {
+        "command": "cargo fmt -- --check",
+        "priority": 4,
+        "category": "style",
+        "description": "Check code formatting against Rustfmt guidelines to maintain style consistency.",
+        "explanation": "Consistent formatting ensures readability and adherence to community conventions."
+      }
+    },
+    "environment": {
+      "extra_env": {
+        "type": "object",
+        "description": "Extra environment variables for running and debugging",
+        "default": {},
+        "scope": "workspace"
+      },
+      "persist_environment": true,
+      "allow_workspace_override": true,
+      "explanation": "Allows customization of environment variables for different development and debugging contexts."
+    }
+  },
+  "rules": {
+    "response_format": {
+      "type": "code_block",
+      "language": "rust",
+      "enclosure": "```rust",
+      "end_enclosure": "```",
+      "constraints": {
+        "use_only_two_backticks": true,
+        "no_additional_code_blocks": true,
+        "avoid_markdown_headers": true,
+        "no_asterisks_or_other_markdown_symbols": true,
+        "maintain_indentation": true,
+        "preserve_comments": true,
+        "explanation": "Responses should be formatted as a minimal Rust code block with only two backticks. This rule applies to the suggestions produced by the system, not the final user-facing output reports."
+      }
+    },
+    "module_referencing": {
+      "prefix": "(at)",
+      "examples": [
+        "(at)module.rs",
+        "(at)current_module.rs",
+        "(at)other_module.rs",
+        "(at)lib.rs",
+        "(at)mod.rs"
+      ],
+      "import_syntax": [
+        "use crate::...",
+        "pub use::...",
+        "use super::...",
+        "use self::..."
+      ],
+      "module_patterns": [
+        "mod {name};",
+        "pub mod {name};",
+        "mod {name} { ... }"
+      ],
+      "explanation": "Defines standardized patterns for referencing, importing, and defining modules to maintain a consistent module hierarchy."
+    }
+  },
+  "error_handling": {
+    "priority_order": [
+      "build_errors",
+      "safety_issues",
+      "test_failures",
+      "style"
+    ],
+    "error_prevention": {
+      "check_before_modification": true,
+      "validate_changes": true,
+      "prevent_new_errors": {
+        "enabled": true,
+        "strategies": [
+          "verify_type_compatibility",
+          "check_ownership_implications",
+          "validate_scope_changes",
+          "ensure_visibility_correctness",
+          "verify_trait_bounds"
+        ],
+        "validation_steps": [
+          "compile_check_after_each_change",
+          "verify_no_new_warnings",
+          "test_affected_modules"
+        ],
+        "explanation": "Proactively prevents introducing new errors by systematically validating changes against common pitfalls."
+      }
+    },
+    "strict_prevention": {
+      "pre_implementation_checks": {
+        "analyze_dependencies": true,
+        "check_downstream_impacts": true,
+        "verify_trait_coherence": true,
+        "validate_type_bounds": true
+      },
+      "code_invariants": {
+        "check_type_safety": true,
+        "verify_memory_safety": true,
+        "ensure_thread_safety": true,
+        "validate_async_safety": true
+      },
+      "implementation_guards": {
+        "prevent_partial_implementations": true,
+        "ensure_complete_pattern_matching": true,
+        "verify_error_handling_completeness": true,
+        "check_resource_cleanup": true
+      }
+    },
+    "unused_imports": {
+      "strategy": "implement_or_justify",
+      "actions": [
+        "find_potential_uses",
+        "suggest_implementations",
+        "create_placeholder_usage"
+      ],
+      "implementation_patterns": {
+        "type_implementations": {
+          "create_wrapper_types": true,
+          "implement_common_traits": true,
+          "add_type_conversions": true
+        },
+        "function_implementations": {
+          "create_utility_functions": true,
+          "add_test_coverage": true,
+          "implement_examples": true
+        },
+        "module_implementations": {
+          "create_feature_modules": true,
+          "implement_module_tests": true,
+          "add_integration_examples": true
+        },
+        "types": "Create type alias or struct implementation",
+        "traits": "Implement trait for existing type",
+        "functions": "Create wrapper or utility function",
+        "modules": "Create new module structure"
+      },
+      "explanation": "For unused imports, either implement uses for them if beneficial or justify their removal. Encourages leveraging unused imports constructively."
+    },
+    "recommendation_requirements": {
+      "minimum_per_error": 2,
+      "maximum_per_error": 5,
+      "actionable": true,
+      "proper_rust_syntax": true,
+      "utilize_unused_imports_if_beneficial": true,
+      "maintain_code_style": true,
+      "preserve_documentation": true,
+      "consider_dependencies": true,
+      "explanation": "Provides guidance on how to produce meaningful, syntactically correct, and context-aware recommendations."
+    },
+    "argument_matching": {
+      "check_function_calls": true,
+      "validate_argument_types": true,
+      "suggest_type_conversions": true,
+      "match_patterns": {
+        "check_destructuring": true,
+        "validate_enum_patterns": true,
+        "ensure_exhaustive_matching": true
+      },
+      "explanation": "Ensures arguments and pattern matches are correct, suggesting type conversions and enforcing exhaustive pattern coverage."
+    },
+    "error_types": [
+      "missing_items",
+      "unused_imports",
+      "incorrect_module_definitions",
+      "type_mismatches",
+      "missing_imports",
+      "visibility_issues",
+      "lifetime_errors",
+      "trait_bounds",
+      "ownership_issues",
+      "borrowing_errors",
+      "async_trait_violations",
+      "derive_macro_errors",
+      "argument_mismatches",
+      "pattern_matching_errors"
+    ],
+    "severity_levels": {
+      "error": "immediate_action_required",
+      "warning": "should_fix",
+      "note": "consider_fixing",
+      "help": "optional_improvement"
+    },
+    "analysis": {
+      "root_cause_identification": {
+        "check_module_hierarchy": true,
+        "analyze_public_interface": true,
+        "check_type_signatures": true,
+        "validate_ownership_patterns": true,
+        "examine_module_dependencies": true,
+        "inspect_unsafe_blocks": true
+      },
+      "explanation": "Focuses on identifying the underlying cause of errors, ensuring that fixes address the root issues."
+    }
+  },
+  "code_refinement": {
+    "constants": {
+      "placement": "below_imports",
+      "naming": {
+        "style": "SCREAMING_SNAKE_CASE",
+        "descriptive": true,
+        "prefix_by_type": {
+          "timeout": "TIMEOUT_",
+          "max_value": "MAX_",
+          "min_value": "MIN_",
+          "default": "DEFAULT_"
+        }
+      },
+      "organization": {
+        "group_by_purpose": true,
+        "order": [
+          "configuration_constants",
+          "business_logic_constants",
+          "error_constants",
+          "default_values"
+        ]
+      },
+      "documentation": {
+        "required": true,
+        "format": "// {description}",
+        "include_units": true,
+        "include_rationale": true
+      },
+      "explanation": "Constants should be well-documented, descriptive, and organized to simplify maintenance and comprehension."
+    },
+    "magic_numbers": {
+      "detection": true,
+      "auto_replace": true,
+      "naming_template": "{PURPOSE}_{UNIT}",
+      "relocation": {
+        "target": "constants_section",
+        "maintain_grouping": true,
+        "update_references": true
+      },
+      "explanation": "Magic numbers should be replaced with named constants placed in a dedicated section for readability and maintainability."
+    },
+    "error_handling_patterns": {
+      "prefer_result_type": true,
+      "custom_error_types": {
+        "create_per_module": true,
+        "include_conversion": true,
+        "implement_std_error": true
+      },
+      "error_propagation": {
+        "use_question_mark": true,
+        "add_context": true
+      },
+      "explanation": "Encourages consistent error handling patterns, custom error types, and contextual error propagation to improve reliability."
+    }
+  },
+  "documentation": {
+    "language": "chinese",
+    "changes": {
+      "required": true,
+      "format": {
+        "errors": "array of strings",
+        "changes": "array of strings",
+        "rationale": "string",
+        "implications": {
+          "performance": "optional string",
+          "safety": "optional string"
+        }
+      },
+      "explanation": "All documentation changes must detail errors fixed, changes made, their rationale, and any performance or safety implications."
+    },
+    "inline_comments": {
+      "required": true,
+      "format": "// {explanation}",
+      "explanation": "Inline comments should clarify non-obvious logic directly in the code."
+    },
+    "requirements": {
+      "require_doc_comments": true,
+      "preserve_existing_docs": true,
+      "update_documentation": true,
+      "required_sections": [
+        "purpose",
+        "parameters",
+        "returns",
+        "panics",
+        "safety",
+        "errors",
+        "examples"
+      ],
+      "guidelines": "All public items must have clear doc comments covering rationale, usage, implications, and illustrative examples.",
+      "explanation": "Comprehensive documentation ensures that all publicly accessible code elements are well understood by users and maintainers."
+    },
+    "implementation_docs": {
+      "required_sections": {
+        "code_context": "Explanation of the surrounding code context",
+        "implementation_rationale": "Why this implementation was chosen",
+        "alternatives_considered": "Other approaches that were evaluated",
+        "performance_implications": "Impact on runtime performance",
+        "memory_considerations": "Impact on memory usage",
+        "threading_implications": "Impact on concurrent execution",
+        "safety_guarantees": "Safety promises and requirements"
+      },
+      "code_examples": {
+        "basic_usage": true,
+        "error_handling": true,
+        "edge_cases": true,
+        "performance_considerations": true
+      }
+    },
+    "change_documentation": {
+      "before_after_comparisons": true,
+      "impact_analysis": {
+        "performance": true,
+        "memory": true,
+        "safety": true,
+        "maintainability": true
+      },
+      "verification_steps": {
+        "include_test_cases": true,
+        "document_edge_cases": true,
+        "list_verification_commands": true
+      }
+    }
+  },
+  "behavior": {
+    "terminal_type": "windows powershell",
+    "avoid_questions": true,
+    "provide_direct_guidance": true,
+    "focus_on_error_resolution": true,
+    "ensure_no_additional_errors": true,
+    "preserve_existing_functionality": true,
+    "maintain_code_organization": true,
+    "respect_rustfmt_settings": true,
+    "implement_over_remove": true,
+    "explanation": "Behavioral guidelines ensure that suggestions are direct, maintain organization, and do not compromise existing functionality."
+  },
+  "analysis": {
+    "static": {
+      "lint_checks": true,
+      "unsafe_code_detection": true,
+      "dead_code_detection": true,
+      "complexity_metrics": true,
+      "dependency_analysis": true
+    },
+    "semantic": {
+      "type_inference": true,
+      "borrow_checker": true,
+      "lifetime_validation": true,
+      "trait_resolution": true,
+      "argument_matching": true
+    },
+    "optimization": {
+      "performance_improvements": true,
+      "memory_optimizations": true,
+      "code_organization": true,
+      "import_optimization": true
+    },
+    "explanation": "Combines static, semantic, and optimization analyses to provide a holistic understanding of the code and identify potential improvements."
+  },
+  "implementation": {
+    "preferred_approach": "implement",
+    "avoid_removing": true,
+    "fix_order": "priority_based",
+    "validation": {
+      "run_checks_after_fixes": true,
+      "require_all_tests_pass": true,
+      "ensure_no_regressions": true,
+      "verify_no_new_errors": true
+    },
+    "unused_code": {
+      "strategy": "implement_or_justify",
+      "create_tests": true,
+      "add_documentation": true
+    },
+    "explanation": "Implementation guidelines prioritize making improvements over removing code, validate all fixes thoroughly, and ensure no regressions or new errors."
+  },
+  "safety": {
+    "unsafe_code": {
+      "require_justification": true,
+      "document_risks": true,
+      "prefer_safe_alternatives": true,
+      "review_requirements": {
+        "document_invariants": true,
+        "explain_safety_guarantees": true
+      }
+    },
+    "error_handling": {
+      "prefer_result_over_panic": true,
+      "require_error_types": true,
+      "document_failure_cases": true,
+      "propagation_strategy": "use_question_mark"
+    },
+    "explanation": "Emphasizes safety by requiring justification for unsafe code and promoting error handling patterns that reduce runtime failures."
+  },
+  "output": {
+    "format": "markdown",
+    "template": "### Error Resolution Report\n\n**Location:** `@{module_name}.rs`\n\n**Error:** `{error_description}`\n\n**Root Cause:** `{root_cause}`\n\n**Proposed Fixes:**\n```rust\n{proposed_fixes}\n```\n\n**Verification Steps:**\n{verification_steps}\n\n**Additional Considerations:**\n{considerations}",
+    "structure": {
+      "error_resolution_report": {
+        "location": "@{module_name}.rs",
+        "error": "{error_description}",
+        "root_cause": "{root_cause}",
+        "proposed_fixes": [
+          {
+            "code": "{fix_code}",
+            "explanation": "{fix_explanation}",
+            "impact": "{fix_impact}",
+            "prerequisites": [
+              "{prerequisite}"
+            ]
+          }
+        ],
+        "verification_steps": [
+          "Step 1",
+          "Step 2",
+          "Step 3"
+        ],
+        "considerations": [
+          "Consideration 1",
+          "Consideration 2",
+          "Consideration 3",
+          "Consideration 4"
+        ]
+      }
+    },
+    "verification_requirements": {
+      "commands_to_run": [
+        "cargo check",
+        "cargo clippy",
+        "cargo test",
+        "cargo fmt -- --check"
+      ],
+      "check_coverage": {
+        "unit_tests": true,
+        "integration_tests": true,
+        "documentation_tests": true
+      },
+      "validation_steps": [
+        "Verify no new warnings",
+        "Check test coverage",
+        "Validate documentation",
+        "Review error handling"
+      ]
+    },
+    "explanation": "The output template is presented in Markdown for user-facing reports, ensuring clarity and consistency in the final error resolution documentation, with comprehensive verification requirements to maintain code quality."
+  }
+}

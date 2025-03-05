@@ -1,0 +1,31 @@
+[package]
+name = "mcp-sqlite"
+version = "0.1.0"
+edition = "2021"
+description = "SQLite MCP Server - Rust implementation"
+authors = ["Your Name <your.email@example.com>"]
+license = "MIT"
+
+[dependencies]
+mcp-core = { git = "https://github.com/modelcontextprotocol/rust-sdk.git" }
+mcp-server = { git = "https://github.com/modelcontextprotocol/rust-sdk.git" }
+rusqlite = { version = "0.29.0", features = ["bundled"] }
+tokio = { version = "1.32.0", features = ["full"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+clap = { version = "4.4", features = ["derive"] }
+anyhow = "1.0"
+thiserror = "1.0"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+tracing-appender = "0.2"
+base64 = "0.21"
+async-trait = "0.1"
+futures = "0.3"
+
+[dev-dependencies]
+mcp-client = { git = "https://github.com/modelcontextprotocol/rust-sdk.git" }
+
+[[example]]
+name = "client"
+path = "examples/client.rs"
