@@ -1,6 +1,7 @@
 # SQLite MCP服务器
 [![Crates.io](https://img.shields.io/crates/v/mcp-sqlite)](https://crates.io/crates/mcp-sqlite)
-[![文档](https://docs.rs/mcp-sqlite/badge.svg)](https://docs.rs/mcp-sqlite)
+[![Rust CI/CD](https://github.com/fishcode2025/mcp-sqlite/actions/workflows/rust.yml/badge.svg)](https://github.com/fishcode2025/mcp-sqlite/actions/workflows/rust.yml)
+[![文档部署](https://github.com/fishcode2025/mcp-sqlite/actions/workflows/docs.yml/badge.svg)](https://github.com/fishcode2025/mcp-sqlite/actions/workflows/docs.yml)
 [![许可证](https://img.shields.io/badge/许可证-MIT-green)](https://github.com/fishcode2025/mcp-sqlite/blob/main/LICENSE)
 
 这是一个使用Rust实现的SQLite MCP服务器，提供通过Model Context Protocol访问SQLite数据库的能力。由[fishcode2025](https://github.com/fishcode2025)组织维护。
