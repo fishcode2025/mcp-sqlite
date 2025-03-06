@@ -51,14 +51,30 @@ jobs:
       - name: 构建发布版本
         run: cargo build --release --verbose
 
-      - name: 上传构建产物
-        uses: actions/upload-pages-artifact@v3
+      # 替换原来的上传构建产物步骤
+      - name: 上传Linux构建产物
+        if: matrix.os == 'ubuntu-latest'
+        uses: actions/upload-artifact@v3
         with:
           name: mcp-sqlite-${{ matrix.os }}
-          path: |
-            target/release/mcp-sqlite
-            target/release/mcp-sqlite.exe
-          if-no-files-found: ignore
+          path: target/release/mcp-sqlite
+          retention-days: 1
+
+      - name: 上传Windows构建产物
+        if: matrix.os == 'windows-latest'
+        uses: actions/upload-artifact@v3
+        with:
+          name: mcp-sqlite-${{ matrix.os }}
+          path: target/release/mcp-sqlite.exe
+          retention-days: 1
+
+      - name: 上传macOS构建产物
+        if: matrix.os == 'macos-latest'
+        uses: actions/upload-artifact@v3
+        with:
+          name: mcp-sqlite-${{ matrix.os }}
+          path: target/release/mcp-sqlite
+          retention-days: 1
 
   # 发布任务，仅在标签推送时运行
   release:

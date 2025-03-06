@@ -122,6 +122,12 @@ cargo run --example client -- --help
 
 > 注意：客户端需要知道服务器可执行文件的路径。如果看到错误 `Error: StdioProcessError("program not found")`，请确保指定了正确的服务器可执行文件路径。
 
+也可以使用官方的ts客户端来验证
+
+```bash
+npx -y @modelcontextprotocol/inspector .\mcp-sqlite.exe  --db C:\\Users\\yourusername\\test.db
+```
+
 ### 3. 验证输出
 
 客户端示例运行后，你应该能看到类似以下的输出：
