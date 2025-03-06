@@ -51,10 +51,11 @@ jobs:
       - name: 构建发布版本
         run: cargo build --release --verbose
 
+
       # 替换原来的上传构建产物步骤
       - name: 上传Linux构建产物
         if: matrix.os == 'ubuntu-latest'
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-artifact@v4.6.1
         with:
           name: mcp-sqlite-${{ matrix.os }}
           path: target/release/mcp-sqlite
@@ -62,7 +63,7 @@ jobs:
 
       - name: 上传Windows构建产物
         if: matrix.os == 'windows-latest'
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-artifact@v4.6.1
         with:
           name: mcp-sqlite-${{ matrix.os }}
           path: target/release/mcp-sqlite.exe
@@ -70,7 +71,7 @@ jobs:
 
       - name: 上传macOS构建产物
         if: matrix.os == 'macos-latest'
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-artifact@v4.6.1
         with:
           name: mcp-sqlite-${{ matrix.os }}
           path: target/release/mcp-sqlite
@@ -87,14 +88,13 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: 下载所有构建产物
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4.1.9
 
       - name: 显示下载的文件
         run: ls -R
 
       - name: 打包Linux版本
         run: |
-          mkdir -p release-artifacts
           if [ -f "mcp-sqlite-ubuntu-latest/mcp-sqlite" ]; then
             tar -czf release-artifacts/mcp-sqlite-linux-x86_64.tar.gz  mcp-sqlite-ubuntu-latest/mcp-sqlite
           fi
