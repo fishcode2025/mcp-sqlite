@@ -1,6 +1,6 @@
 [package]
 name = "mcp-sqlite"
-version = "0.1.1"
+version = "0.1.4"
 edition = "2021"
 description = "SQLite MCP Server - Rust implementation"
 authors = ["waitfish <daiwj2024@outlook.com>"]
