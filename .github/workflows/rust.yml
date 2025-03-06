@@ -54,7 +54,7 @@ jobs:
       # 替换原来的上传构建产物步骤
       - name: 上传Linux构建产物
         if: matrix.os == 'ubuntu-latest'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-pages-artifact@v3
         with:
           name: mcp-sqlite-${{ matrix.os }}
           path: target/release/mcp-sqlite
@@ -62,7 +62,7 @@ jobs:
 
       - name: 上传Windows构建产物
         if: matrix.os == 'windows-latest'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-pages-artifact@v3
         with:
           name: mcp-sqlite-${{ matrix.os }}
           path: target/release/mcp-sqlite.exe
@@ -70,7 +70,7 @@ jobs:
 
       - name: 上传macOS构建产物
         if: matrix.os == 'macos-latest'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-pages-artifact@v3
         with:
           name: mcp-sqlite-${{ matrix.os }}
           path: target/release/mcp-sqlite
