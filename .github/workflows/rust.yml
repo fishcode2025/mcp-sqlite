@@ -50,15 +50,15 @@ jobs:
 
       - name: 构建发布版本
         run: cargo build --release --verbose
-        
+
       - name: 检查Linux构建产物
         if: matrix.os == 'ubuntu-latest'
         run: ls -la target/release/
-   
+
       - name: 检查Windows构建产物
         if: matrix.os == 'windows-latest'
         run: dir target\release\
-   
+
       - name: 检查macOS构建产物
         if: matrix.os == 'macos-latest'
         run: ls -la target/release/
@@ -103,6 +103,9 @@ jobs:
 
       - name: 显示下载的文件
         run: ls -R
+
+      - name: 创建发布目录
+        run: mkdir -p release-artifacts
 
       - name: 打包Linux版本
         run: |
