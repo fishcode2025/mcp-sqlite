@@ -11,9 +11,6 @@ fishcode2025是一个致力于开发高质量、开源软件的组织，专注�
 Model Context Protocol (MCP) 是一种用于模型和上下文交互的协议，我们的MCP系列项目包括：
 
 - **mcp-sqlite**: SQLite数据库的MCP服务器实现
-- **mcp-core-fishcode2025**: MCP核心库
-- **mcp-server-fishcode2025**: MCP服务器框架
-- **mcp-client-fishcode2025**: MCP客户端库
 
 ## 贡献指南
 
