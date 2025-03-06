@@ -52,7 +52,7 @@ jobs:
         run: cargo build --release --verbose
 
       - name: 上传构建产物
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-pages-artifact@v3
         with:
           name: mcp-sqlite-${{ matrix.os }}
           path: |
